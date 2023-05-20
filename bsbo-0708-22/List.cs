@@ -7,34 +7,41 @@ namespace bsbo_0708_22
         // Проверяем пустой ли наш список
         public bool IsEmpty()
         {
-            return Tail == null;
+            Program.N_OP += 1; 
+            return Tail == null; // 1
         }
 
         // Добавляем элемент в конец списка
         public void Push(Element elem)
         {
-            if (!IsEmpty())
+            Program.N_OP += 2;
+            if (!IsEmpty()) // 2
             {
-                elem.next = Tail;
+                elem.next = Tail; // 2
+                Program.N_OP += 2;
             }
 
-            Tail = elem;
+            Tail = elem; // 1
+            Program.N_OP += 1;
         }
 
         // Вытаскиваем элемент из конца списка
         public Element Pop()
         {
+            Program.N_OP += 1;
             if (IsEmpty())
             {
                 throw new Exception("ListElem is empty");
             }
+            
+            Element result = Tail; // 1
 
-            Element result = Tail;
+            Tail = Tail.next; // 2
 
-            Tail = Tail.next;
+            result.next = null; // 2
 
-            result.next = null;
-
+            Program.N_OP += 5;
+            
             return result;
         }
 
@@ -42,15 +49,20 @@ namespace bsbo_0708_22
         protected virtual Element GetElemById(int index)
         {
             Element current = Tail;
+            Program.N_OP += 1;
 
-            for (int i = 0; i < index; i++)
+            Program.N_OP += 2;
+            // 2
+            for (int i = 0; i < index; i++) // 2 + 1
             {
-                current = current.next;
+                current = current.next; // 2
 
-                if (current == null)
+                if (current == null) // 1
                 {
                     throw new Exception("ListElem out of range");
                 }
+                
+                Program.N_OP += 6;
             }
 
             return current;
@@ -59,15 +71,17 @@ namespace bsbo_0708_22
         // Получаем int value по индексу в нашем списке
         public int Get(int index)
         {
-            Element result = GetElemById(index);
-            return result.value;
+            Program.N_OP += 4;
+            Element result = GetElemById(index); // 3
+            return result.value; // 1
         }
 
         // Перезаписываем int value по индексу в нашем списке
         public void Set(int index, int newValue)
         {
-            Element result = GetElemById(index);
-            result.value = newValue;
+            Element result = GetElemById(index); // 3
+            Program.N_OP += 5;
+            result.value = newValue; // 2
         }
 
         // Вывод содержимого в консоль
@@ -86,8 +100,16 @@ namespace bsbo_0708_22
         // Перегрузка оператора индексации []
         public int this[int index]
         {
-            get => Get(index);
-            set => Set(index, value);
+            get
+            {
+                Program.N_OP += 2;
+                return Get(index); // 2
+            }
+            set
+            {
+                Program.N_OP += 3;
+                Set(index, value); // 3
+            }
         }
     }
 }

@@ -3,6 +3,8 @@ using System;
 
 internal class Program
 {
+    public static int N_OP = 0;
+    
     // Вывод массива в консоль
     static void PrintArr(int[] arr)
     {
@@ -115,25 +117,42 @@ internal class Program
         
         list.Print();
 
+        // START SORTING
+        Program.N_OP += 1;
         bool flagSwap = false;
+        Program.N_OP += 2;
+        // 2
         for (int i = 0; i < N; i++)
         {
-            flagSwap = false;
+            flagSwap = false; // 1
 
-            for (int j = 0; j < N - i - 1; j++)
+            Program.N_OP += 3;
+            // 5
+            for (int j = 0; j < N - i - 1; j++) // 2 + 3 = 5
             {
-                if (list[j] > list[j + 1])
+                Program.N_OP += 4;
+                if (list[j] > list[j + 1]) // 1 + 3 = 4
                 {
                     (list[j], list[j + 1]) = (list[j + 1], list[j]);
+                    Program.N_OP += 9;
                     flagSwap = true;
                 }
+
+                Program.N_OP += 5;
             }
 
+            Program.N_OP += 2;
             if (!flagSwap)
+            {
+                Program.N_OP += 1;
                 break;
+            }
         }
         
+        // END SORTING
+        
         list.Print();
+        Console.WriteLine($"N_OP: {Program.N_OP}");
     }
     
     // Сортировка стэка алгоритмом Пузырек
@@ -177,7 +196,7 @@ internal class Program
         // SortBubble();
         // RefVsValueTypes();
         // RefElems();
-        // SortListElem();
-        SortStackElem();
+        SortListElem();
+        // SortStackElem();
     }
 }
